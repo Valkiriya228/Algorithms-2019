@@ -106,7 +106,11 @@ public class JavaAlgorithms {
      * но приветствуется попытка решить её самостоятельно.
      */
     static public int josephTask(int menNumber, int choiceInterval)   {
-        throw new NotImplementedError();
+        int result = 0;
+        for (int i = 1; i <= menNumber; i++) {
+            result = (result + choiceInterval) % i;
+        }
+        return result + 1;
     }
 
     /**
