@@ -3,6 +3,9 @@ package lesson2;
 import kotlin.NotImplementedError;
 import kotlin.Pair;
 
+import java.io.*;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Set;
 
 @SuppressWarnings("unused")
@@ -31,8 +34,26 @@ public class JavaAlgorithms {
      *
      * В случае обнаружения неверного формата файла бросить любое исключение.
      */
-    static public Pair<Integer, Integer> optimizeBuyAndSell(String inputName) {
-        throw new NotImplementedError();
+    static public Pair<Integer, Integer> optimizeBuyAndSell(String inputName) throws IOException {
+        BufferedReader reader = new BufferedReader(new FileReader(new File(inputName)));
+        ArrayList<Integer> arr = new ArrayList<>();
+        Pair<Integer, Integer> pair = new Pair<>(0, 0);
+        String line;
+        line = reader.readLine();
+        while (line != null) {
+            arr.add(Integer.valueOf(line));
+            line = reader.readLine();
+        }
+        int k = 0;
+        for (int i = 0; i < arr.size() - 1; i++) {
+            for (int j = i + 1; j < arr.size(); j++) {
+                if (arr.get(i) < arr.get(j) && arr.get(j) - arr.get(i) > k) {
+                    k = arr.get(j) - arr.get(i);
+                    pair = new Pair<>(i + 1, j + 1);
+                }
+            }
+        }
+        return pair;
     }
 
     /**
@@ -84,7 +105,7 @@ public class JavaAlgorithms {
      * Общий комментарий: решение из Википедии для этой задачи принимается,
      * но приветствуется попытка решить её самостоятельно.
      */
-    static public int josephTask(int menNumber, int choiceInterval) {
+    static public int josephTask(int menNumber, int choiceInterval)   {
         throw new NotImplementedError();
     }
 
@@ -113,8 +134,27 @@ public class JavaAlgorithms {
      * Справка: простым считается число, которое делится нацело только на 1 и на себя.
      * Единица простым числом не считается.
      */
+
     static public int calcPrimesNumber(int limit) {
-        throw new NotImplementedError();
+        if (limit <= 1) return 0;
+        if (limit == 2) return 1;
+        int k = 0;
+        for (int i = 1; i <= limit; i++) {
+            if (IsSimple(i)) {
+                k++;
+            }
+        }
+        return k;
+    }
+
+    private static boolean IsSimple(int value)  {
+        if (value % 2 == 0) return false;
+        for (int i = 3; (i * i) <= value; i += 2)  {
+            if (value % i == 0)  {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**

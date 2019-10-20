@@ -2,6 +2,10 @@ package lesson1;
 
 import kotlin.NotImplementedError;
 
+import java.io.*;
+import java.util.*;
+import java.util.stream.Collectors;
+
 @SuppressWarnings("unused")
 public class JavaTasks {
     /**
@@ -34,8 +38,84 @@ public class JavaTasks {
      *
      * В случае обнаружения неверного формата файла бросить любое исключение.
      */
-    static public void sortTimes(String inputName, String outputName) {
-        throw new NotImplementedError();
+    static public void sortTimes(String inputName, String outputName) throws IOException {
+        ArrayList<Integer> arram = new ArrayList<>();
+        ArrayList<Integer> arrpm = new ArrayList<>();
+        BufferedReader reader = new BufferedReader(new FileReader(new File(inputName)));
+        BufferedWriter writer = new BufferedWriter(new FileWriter(new File(outputName)));
+        String line;
+        line = reader.readLine();
+        while (line != null) {
+            if (!line.matches("(([0-9]{2}:[0-9]{2}:[0-9]{2}) (AM|PM))")) {
+                throw new IllegalArgumentException();
+            }
+            String[] str = line.replace(":", "").split(" ");
+            Integer digit = Integer.parseInt(str[0]);
+            if (str[1].equals("AM")) {
+                String one = str[0].substring(0, 2);
+                if (one.equals("12")) {
+                    arram.add(digit - 120000);
+                } else
+                arram.add(digit);
+            } else  {
+                String one = str[0].substring(0, 2);
+                if (one.equals("12")) {
+                    arrpm.add(digit - 120000);
+                } else arrpm.add(digit);
+            }
+            line = reader.readLine();
+        }
+        System.out.println(arram);
+        System.out.println(arrpm);
+        Collections.sort(arram);
+        Collections.sort(arrpm);
+        String result = "";
+        for (int i = 0; i < arram.size(); i++) {
+            String arr = arram.get(i).toString();
+            if (arram.get(i).toString().length() == 5) {
+                arr = "0" + arram.get(i);
+            }
+            if (arram.get(i).toString().length() == 4) {
+                arr = "12" + arram.get(i);
+            }
+            if (arram.get(i).toString().length() == 3) {
+                arr = "120" + arram.get(i);
+            }
+            if (arram.get(i).toString().length() == 2) {
+                arr = "1200" + arram.get(i);
+            }
+            if (arram.get(i).toString().length() == 1) {
+                arr = "12000" + arram.get(i);
+            }
+            String hours = arr.substring(0, 2);
+            String minutes = arr.substring(2, 4);
+            String seconds = arr.substring(4);
+             result += (hours + ":" + minutes + ":" + seconds + " AM" + "\n");
+        }
+        for (int i = 0; i < arrpm.size(); i++) {
+            String arr = arrpm.get(i).toString();
+            if (arrpm.get(i).toString().length() == 5) {
+                arr = "0" + arrpm.get(i);
+            }
+            if (arrpm.get(i).toString().length() == 4) {
+                arr = "12" + arrpm.get(i);
+            }
+            if (arrpm.get(i).toString().length() == 3) {
+                arr = "120" + arrpm.get(i);
+            }
+            if (arrpm.get(i).toString().length() == 2) {
+                arr = "1200" + arrpm.get(i);
+            }
+            if (arrpm.get(i).toString().length() == 1) {
+                arr = "12000" + arrpm.get(i);
+            }
+            String hours = arr.substring(0, 2);
+            String minutes = arr.substring(2, 4);
+            String seconds = arr.substring(4);
+            result += (hours + ":" + minutes + ":" + seconds + " PM" + "\n");
+        }
+        writer.write(result);
+        writer.close();
     }
 
     /**
@@ -98,8 +178,25 @@ public class JavaTasks {
      * 99.5
      * 121.3
      */
-    static public void sortTemperatures(String inputName, String outputName) {
-        throw new NotImplementedError();
+    static public void sortTemperatures(String inputName, String outputName) throws IOException {
+        BufferedReader reader = new BufferedReader(new FileReader(new File(inputName)));
+        BufferedWriter writer = new BufferedWriter(new FileWriter(new File(outputName)));
+        ArrayList<Double> temp = new ArrayList<>();
+        String line;
+        line = reader.readLine();
+        while (line != null) {
+            if (!line.matches("(-?\\d{1,3}\\.\\d)")) {
+                throw new IllegalArgumentException();
+            }
+            temp.add(Double.valueOf(line));
+            line = reader.readLine();
+        }
+        Collections.sort(temp);
+        for (int i = 0; i < temp.size(); i++){
+            if (temp.get(i) >= -273.0 && temp.get(i) <= 500.0)
+            writer.write(temp.get(i) + "\n");
+        }
+        writer.close();
     }
 
     /**
@@ -131,9 +228,45 @@ public class JavaTasks {
      * 2
      * 2
      */
-    static public void sortSequence(String inputName, String outputName) {
-        throw new NotImplementedError();
+    static public void sortSequence(String inputName, String outputName) throws IOException {
+        BufferedReader reader = new BufferedReader(new FileReader(new File(inputName)));
+        BufferedWriter writer = new BufferedWriter(new FileWriter(new File(outputName)));
+        ArrayList<Long> temp2 = new ArrayList<>();
+        Set<Long> numberSet = new HashSet<>();
+        String line;
+        line = reader.readLine();
+        while (line != null) {
+            numberSet.add(Long.parseLong(line));
+            temp2.add(Long.valueOf((line)));
+            line = reader.readLine();
+        }
+        Object[] temp1 = numberSet.toArray();
+        long k = Collections.frequency(temp2, temp1[0]);
+        long mindigit = (long) temp1[0];
+
+        for (int i = 0; i < temp1.length; i++) {
+            long a = Collections.frequency(temp2, temp1[i]);
+            long digit = (long) temp1[i];
+            if (a > k) {
+                k = a;
+                mindigit = digit;
+            } else if (a == k) {
+                if (mindigit > digit) mindigit = digit;
+            }
+        }
+        System.out.println(mindigit);
+        System.out.println(k);
+        for (int i = 0; i < temp2.size(); i++) {
+            if (!temp2.get(i).equals(mindigit)) writer.write(temp2.get(i) + "\n");
+        }
+        int a = 0;
+        while (a != k) {
+            writer.write(mindigit + "\n");
+            a++;
+        }
+        writer.close();
     }
+
 
     /**
      * Соединить два отсортированных массива в один
@@ -150,6 +283,9 @@ public class JavaTasks {
      * Результат: second = [1 3 4 9 9 13 15 20 23 28]
      */
     static <T extends Comparable<T>> void mergeArrays(T[] first, T[] second) {
-        throw new NotImplementedError();
-    }
+        for (int j = 0; j < first.length; j++) {
+            second[j] = first[j];
+        }
+        Arrays.sort(second);
+     }
 }
