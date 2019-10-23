@@ -1,6 +1,8 @@
 package lesson1;
 
 import kotlin.NotImplementedError;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.*;
 import java.util.*;
@@ -37,6 +39,7 @@ public class JavaTasks {
      * 07:56:14 PM
      *
      * В случае обнаружения неверного формата файла бросить любое исключение.
+     * Оценка трудоемкости: T = O(N)
      */
     static public void sortTimes(String inputName, String outputName) throws IOException {
         ArrayList<Integer> arram = new ArrayList<>();
@@ -144,8 +147,9 @@ public class JavaTasks {
      *
      * В случае обнаружения неверного формата файла бросить любое исключение.
      */
-    static public void sortAddresses(String inputName, String outputName) {
+    static public void sortAddresses(String inputName, String outputName) throws IOException {
         throw new NotImplementedError();
+
     }
 
     /**
@@ -177,7 +181,9 @@ public class JavaTasks {
      * 24.7
      * 99.5
      * 121.3
-     */
+     * /* Оценка ресурсоемкости: R = O(1)
+     *         Оценка трудоемкости: T = O(N)
+     *          */
     static public void sortTemperatures(String inputName, String outputName) throws IOException {
         BufferedReader reader = new BufferedReader(new FileReader(new File(inputName)));
         BufferedWriter writer = new BufferedWriter(new FileWriter(new File(outputName)));
@@ -281,6 +287,7 @@ public class JavaTasks {
      * second = [null null null null null 1 3 9 13 18 23]
      *
      * Результат: second = [1 3 4 9 9 13 15 20 23 28]
+     * Оценка трудоемкости: T = O(N)
      */
     static <T extends Comparable<T>> void mergeArrays(T[] first, T[] second) {
         for (int j = 0; j < first.length; j++) {
