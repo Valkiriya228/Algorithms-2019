@@ -33,6 +33,7 @@ public class JavaAlgorithms {
      * Например, для приведённого выше файла результат должен быть Pair(3, 4)
      *
      * В случае обнаружения неверного формата файла бросить любое исключение.
+     * Оценка трудоемкости: T = O(N^2)
      */
     static public Pair<Integer, Integer> optimizeBuyAndSell(String inputName) throws IOException {
         BufferedReader reader = new BufferedReader(new FileReader(new File(inputName)));
@@ -104,6 +105,7 @@ public class JavaAlgorithms {
      *
      * Общий комментарий: решение из Википедии для этой задачи принимается,
      * но приветствуется попытка решить её самостоятельно.
+     * Оценка трудоемкости: T = O(N)
      */
     static public int josephTask(int menNumber, int choiceInterval)   {
         int result = 0;
@@ -137,6 +139,7 @@ public class JavaAlgorithms {
      *
      * Справка: простым считается число, которое делится нацело только на 1 и на себя.
      * Единица простым числом не считается.
+     * Оценка трудоемкости: T = O(N)
      */
 
     static public int calcPrimesNumber(int limit) {
