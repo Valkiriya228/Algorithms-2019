@@ -181,7 +181,7 @@ public class JavaTasks {
      * 24.7
      * 99.5
      * 121.3
-     * /* Оценка ресурсоемкости: R = O(1)
+     * /* Оценка ресурсоемкости: R = O(N)
      *         Оценка трудоемкости: T = O(N)
      *          */
     static public void sortTemperatures(String inputName, String outputName) throws IOException {
