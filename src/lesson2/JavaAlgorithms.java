@@ -34,6 +34,7 @@ public class JavaAlgorithms {
      *
      * В случае обнаружения неверного формата файла бросить любое исключение.
      * Оценка трудоемкости: T = O(N^2)
+     * Затраты памяти: O(N), N - кол-во строк во входном файле inputName
      */
     static public Pair<Integer, Integer> optimizeBuyAndSell(String inputName) throws IOException {
         BufferedReader reader = new BufferedReader(new FileReader(new File(inputName)));
@@ -106,6 +107,7 @@ public class JavaAlgorithms {
      * Общий комментарий: решение из Википедии для этой задачи принимается,
      * но приветствуется попытка решить её самостоятельно.
      * Оценка трудоемкости: T = O(N)
+     * Затраты памяти: O(N), N - кол-во строк во входном файле inputName
      */
     static public int josephTask(int menNumber, int choiceInterval)   {
         int result = 0;
@@ -139,7 +141,8 @@ public class JavaAlgorithms {
      *
      * Справка: простым считается число, которое делится нацело только на 1 и на себя.
      * Единица простым числом не считается.
-     * Оценка трудоемкости: T = O(N)
+     * Оценка трудоемкости: T = O(N^(3/2))
+     *  Ресурсоемкость: O(1)
      */
 
     static public int calcPrimesNumber(int limit) {

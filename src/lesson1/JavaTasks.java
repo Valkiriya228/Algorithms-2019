@@ -39,7 +39,7 @@ public class JavaTasks {
      * 07:56:14 PM
      *
      * В случае обнаружения неверного формата файла бросить любое исключение.
-     * Оценка трудоемкости: T = O(N)
+     * Затраты памяти: O(N), N - кол-во строк во входном файле inputName
      */
     static public void sortTimes(String inputName, String outputName) throws IOException {
         ArrayList<Integer> arram = new ArrayList<>();
@@ -73,7 +73,7 @@ public class JavaTasks {
         Collections.sort(arram);
         Collections.sort(arrpm);
         String result = "";
-        for (int i = 0; i < arram.size(); i++) {
+        for (int i = 0; i < arram.size(); i++) { //O(N)
             String arr = arram.get(i).toString();
             if (arram.get(i).toString().length() == 5) {
                 arr = "0" + arram.get(i);
@@ -95,7 +95,7 @@ public class JavaTasks {
             String seconds = arr.substring(4);
              result += (hours + ":" + minutes + ":" + seconds + " AM" + "\n");
         }
-        for (int i = 0; i < arrpm.size(); i++) {
+        for (int i = 0; i < arrpm.size(); i++) { // O(N)
             String arr = arrpm.get(i).toString();
             if (arrpm.get(i).toString().length() == 5) {
                 arr = "0" + arrpm.get(i);
@@ -181,9 +181,9 @@ public class JavaTasks {
      * 24.7
      * 99.5
      * 121.3
-     * /* Оценка ресурсоемкости: R = O(N)
-     *         Оценка трудоемкости: T = O(N)
-     *          */
+     * /* Затраты памяти: O(N), N - кол-во строк во входном файле inputName
+     *    Оценка трудоемкости: T = O(N)
+     */
     static public void sortTemperatures(String inputName, String outputName) throws IOException {
         BufferedReader reader = new BufferedReader(new FileReader(new File(inputName)));
         BufferedWriter writer = new BufferedWriter(new FileWriter(new File(outputName)));
@@ -198,7 +198,7 @@ public class JavaTasks {
             line = reader.readLine();
         }
         Collections.sort(temp);
-        for (int i = 0; i < temp.size(); i++){
+        for (int i = 0; i < temp.size(); i++){ //O(n)
             if (temp.get(i) >= -273.0 && temp.get(i) <= 500.0)
             writer.write(temp.get(i) + "\n");
         }
@@ -250,7 +250,7 @@ public class JavaTasks {
         long k = Collections.frequency(temp2, temp1[0]);
         long mindigit = (long) temp1[0];
 
-        for (int i = 0; i < temp1.length; i++) {
+        for (int i = 0; i < temp1.length; i++) { //O(N)
             long a = Collections.frequency(temp2, temp1[i]);
             long digit = (long) temp1[i];
             if (a > k) {
@@ -262,7 +262,7 @@ public class JavaTasks {
         }
         System.out.println(mindigit);
         System.out.println(k);
-        for (int i = 0; i < temp2.size(); i++) {
+        for (int i = 0; i < temp2.size(); i++) { // O(N)
             if (!temp2.get(i).equals(mindigit)) writer.write(temp2.get(i) + "\n");
         }
         int a = 0;
@@ -272,6 +272,7 @@ public class JavaTasks {
         }
         writer.close();
     }
+
 
 
     /**
@@ -288,9 +289,10 @@ public class JavaTasks {
      *
      * Результат: second = [1 3 4 9 9 13 15 20 23 28]
      * Оценка трудоемкости: T = O(N)
+     * Затраты памяти: O(N), N - кол-во строк во входном файле inputName
      */
     static <T extends Comparable<T>> void mergeArrays(T[] first, T[] second) {
-        for (int j = 0; j < first.length; j++) {
+        for (int j = 0; j < first.length; j++) { //O(N)
             second[j] = first[j];
         }
         Arrays.sort(second);
