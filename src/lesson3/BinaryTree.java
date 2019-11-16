@@ -72,11 +72,55 @@ public class BinaryTree<T extends Comparable<T>> extends AbstractSet<T> implemen
      * Удаление элемента в дереве
      * Средняя
      */
+    //Трудоемкость: T = O(n)
+    // Ресурсоемкость: R = O(1)
     @Override
     public boolean remove(Object o) {
-        // TODO
-        throw new NotImplementedError();
+        T base = (T) o;
+        boolean rightChild = false;
+        Node<T> parent = root;
+        Node<T> current = root;
+       if (!contains(o)) return false;
+        while (base != current.value) {
+            parent = current;
+            if (base.compareTo(current.value) < 0) {
+                current = current.left;
+                rightChild = false;
+            } else {
+                current = current.right;
+                rightChild = true;
+            }
+        }
+        if (current.left == null) {
+            if (current == root) root = current.right;
+             else if (rightChild) parent.right = current.right;
+             else parent.left = current.right;
+        }
+        else if (current.right == null) {
+            if (current == root) root = current.left;
+             else if (rightChild)  parent.right = current.left;
+             else  parent.left = current.left;
+        } else {
+            Node<T> heir = current.left;
+            Node<T> heirParent = current;
+
+            while (heir.right != null) {
+                heirParent = heir;
+                heir = heir.right;
+            }
+            if (current == root) root = heir;
+            else if (rightChild) parent.right = heir;
+             else parent.left = heir;
+            if (heir != current.left) {
+                heirParent.right = heir.left;
+                heir.left = current.left;
+            }
+            heir.right = current.right;
+        }
+        size--;
+        return true;
     }
+
 
     @Override
     public boolean contains(Object o) {
@@ -107,9 +151,18 @@ public class BinaryTree<T extends Comparable<T>> extends AbstractSet<T> implemen
     }
 
     public class BinaryTreeIterator implements Iterator<T> {
+        Node<T> node = null;
+
+        Stack<Node<T>> stack = new Stack<Node<T>>();
+        private Node<T> current;
 
         private BinaryTreeIterator() {
             // Добавьте сюда инициализацию, если она необходима
+            current = root;
+            while (current != null){
+                stack.push(current);
+                current = current.left;
+            }
         }
 
         /**
@@ -118,9 +171,15 @@ public class BinaryTree<T extends Comparable<T>> extends AbstractSet<T> implemen
          */
         @Override
         public boolean hasNext() {
-            // TODO
-            throw new NotImplementedError();
+            return !stack.isEmpty();
         }
+
+        public Node<T> findNext() {
+            return stack.pop();
+        }
+
+        //Ресурсоёмкость R = O(1)
+        //Трудоёмкость Т = O(n)
 
         /**
          * Поиск следующего элемента
@@ -128,19 +187,33 @@ public class BinaryTree<T extends Comparable<T>> extends AbstractSet<T> implemen
          */
         @Override
         public T next() {
-            // TODO
-            throw new NotImplementedError();
+            current = findNext();
+            node = current;
+            if (current == null) throw new NoSuchElementException();
+            if (node.right != null) {
+                node = node.right;
+            while (node != null) {
+                stack.push(node);
+                node = node.left;
+            }
         }
+            return current.value;
+        }
+
+
 
         /**
          * Удаление следующего элемента
          * Сложная
          */
+
+        //Ресурсоёмкость R = O(1)
+        //Трудоёмкость Т = O(n)
         @Override
         public void remove() {
-            // TODO
-            throw new NotImplementedError();
+            BinaryTree.this.remove(current.value);
         }
+
     }
 
     @NotNull
@@ -161,6 +234,8 @@ public class BinaryTree<T extends Comparable<T>> extends AbstractSet<T> implemen
         return null;
     }
 
+
+
     /**
      * Для этой задачи нет тестов (есть только заготовка subSetTest), но её тоже можно решить и их написать
      * Очень сложная
@@ -176,28 +251,50 @@ public class BinaryTree<T extends Comparable<T>> extends AbstractSet<T> implemen
      * Найти множество всех элементов меньше заданного
      * Сложная
      */
+
+    //Ресурсоёмкость R = O(n)
+    //Трудоёмкость Т = O(n)
+
+
+    private SortedSet<T> set2 = new TreeSet<>();
     @NotNull
     @Override
     public SortedSet<T> headSet(T toElement) {
-        // TODO
-        throw new NotImplementedError();
+       BinaryTreeIterator iter = new BinaryTreeIterator();
+       while (iter.hasNext()) {
+           T val = (T) iter.next();
+           if ((val.compareTo(toElement)) < 0) set2.add(val);
+       }
+        System.out.println(set2);
+       return set2;
     }
 
     /**
      * Найти множество всех элементов больше или равных заданного
      * Сложная
      */
+
+
+    //Ресурсоёмкость R = O(n)
+    //Трудоёмкость Т = O(n)
+
+    private SortedSet<T> set1 = new TreeSet<>();
     @NotNull
     @Override
     public SortedSet<T> tailSet(T fromElement) {
-        // TODO
-        throw new NotImplementedError();
+        BinaryTreeIterator iter = new BinaryTreeIterator();
+        while (iter.hasNext()) {
+            T val = (T) iter.next();
+            if ((val.compareTo(fromElement)) >= 0) set1.add(val);
+        }
+        System.out.println(set1);
+        return set1;
     }
 
     @Override
     public T first() {
-        if (root == null) throw new NoSuchElementException();
         Node<T> current = root;
+        if (root == null) throw new NoSuchElementException();
         while (current.left != null) {
             current = current.left;
         }
@@ -206,8 +303,8 @@ public class BinaryTree<T extends Comparable<T>> extends AbstractSet<T> implemen
 
     @Override
     public T last() {
-        if (root == null) throw new NoSuchElementException();
         Node<T> current = root;
+        if (root == null) throw new NoSuchElementException();
         while (current.right != null) {
             current = current.right;
         }
