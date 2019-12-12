@@ -1,6 +1,7 @@
 package lesson6;
 
 import kotlin.NotImplementedError;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -21,7 +22,7 @@ public class JavaDynamicTasks {
      * Если есть несколько самых длинных общих подпоследовательностей, вернуть любую из них.
      * При сравнении подстрок, регистр символов *имеет* значение.
      * @return
-     ** Трудоемкость: T = o(n * m) n = lenf, m = lens, т.е n - кол-во столбцов в нашем двумерном массиве,  
+     ** Трудоемкость: T = o(n * m) n = lenf, m = lens, т.е n - кол-во столбцов в нашем двумерном массиве,
      ** Ресурсоемкость: R = o(n * m) m -кол-во строк в нашем двумерном массиве
      */
 
@@ -127,52 +128,9 @@ public class JavaDynamicTasks {
      * Здесь ответ 2 + 3 + 4 + 1 + 2 = 12
      */
     public static int shortestPathOnField(String inputName) {
-        ArrayList<Integer> list = new ArrayList<Integer>();
-        int res = 0;
-        try {
-            FileReader fr = new FileReader(inputName);
-            BufferedReader reader = new BufferedReader(fr);
-            String line = reader.readLine();
-            int str = 0;
-            int stl = line.split("\\s").length;
-            while (line != null) {
-                str ++;
-                for (String st : line.split("\\s")) {
-                    list.add(Integer.valueOf(st));
-                }
-                line = reader.readLine();
-            }
-            int[][] arr = new int[str][stl];
-            int l = 0;
-            for (int i = 0; i < str; i++) {
-                for (int j = 0; j < stl; j++) {
-                    arr[i][j] = list.get(l);
-                    l++;
-                }
-            }
-            ArrayList<Integer> finish = new ArrayList<>();
-            res = Collections.min(allM(arr, finish, 0, 0, str, stl, 0));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        System.out.println(res);
-        return res;
+    throw new NotImplementedException();
     }
 
-    private static ArrayList<Integer> allM(int[][] arr,ArrayList<Integer> finish, int startA, int startB, int str, int stl, int res){
-        int x = arr[startA][startB];
-        if (startA + 1 < str) {
-            allM(arr, finish, startA + 1, startB, str, stl, res + x);
-        }
-        if (startB + 1 < stl) {
-            allM(arr, finish, startA, startB + 1, str, stl, res + x);
-        }
-        if (startA + 1 < str && startB + 1 < stl){
-            allM(arr, finish, startA + 1, startB + 1, str, stl, res + x);
-        }
-        if (startA == str - 1 && startB == stl - 1) finish.add(res);
-        return finish;
-    }
 
     // Задачу "Максимальное независимое множество вершин в графе без циклов"
     // смотрите в уроке 5
