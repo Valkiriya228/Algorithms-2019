@@ -1,8 +1,10 @@
 package lesson6;
 
 import kotlin.NotImplementedError;
-import org.jetbrains.annotations.NotNull;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.*;
 
 @SuppressWarnings("unused")
@@ -18,10 +20,39 @@ public class JavaDynamicTasks {
      * Если общей подпоследовательности нет, вернуть пустую строку.
      * Если есть несколько самых длинных общих подпоследовательностей, вернуть любую из них.
      * При сравнении подстрок, регистр символов *имеет* значение.
+     * @return
+     ** Трудоемкость: T = o(n * m) n = lenf, m = lens, т.е n - кол-во столбцов в нашем двумерном массиве,  
+     ** Ресурсоемкость: R = o(n * m) m -кол-во строк в нашем двумерном массиве
      */
+
+
     public static String longestCommonSubSequence(String first, String second) {
-        throw new NotImplementedError();
+        int lenf;
+        lenf = first.length();
+        int lens;
+        lens = second.length();
+        int[][] mas = new int[1 + lens][1 + lenf];
+        String res = "";
+
+        for (int i = 1; i < (lens + 1); i++) {
+            for (int j = 1; j < (lenf + 1); j++) {
+                if (second.charAt(i - 1) == first.charAt(j - 1)) mas[i][j] = 1 + mas[i -1][j - 1];
+                 else mas[i][j] = Math.max(mas[i][j - 1], mas[i - 1][j]);
+            }
+        }
+        while (mas[lens][lenf] > 0) {
+            if (mas[lens][lenf] == mas[lens - 1][lenf]) lens -= 1;
+            else if (mas[lens][lenf] == mas[lens][lenf - 1]) {
+                lenf -= 1;
+            } else {
+                lenf -= 1;
+                lens -= 1;
+                res = String.format("%s%s", first.charAt(lenf), res);
+            }
+        }
+  return res;
     }
+
 
     /**
      * Наибольшая возрастающая подпоследовательность
@@ -34,10 +65,46 @@ public class JavaDynamicTasks {
      * Если самых длинных возрастающих подпоследовательностей несколько (как в примере),
      * то вернуть ту, в которой числа расположены раньше (приоритет имеют первые числа).
      * В примере ответами являются 2, 8, 9, 12 или 2, 5, 9, 12 -- выбираем первую из них.
+     ** Трудоемкость: T = o(n*n) n = listSize, т.е размер списка list
+     ** Ресурсоемкость: R = o(n), n = listSize, т.е размер списка list
      */
     public static List<Integer> longestIncreasingSubSequence(List<Integer> list)  {
-        throw new NotImplementedError();
-    }
+        int listSize = list.size();
+        if (listSize <= 1) return list;
+        int k = 0;
+        ArrayList<Integer> res = new ArrayList<>(); //лист результата
+        ArrayList<Integer> len = new ArrayList<>(); //лист длины последовательности
+        ArrayList<Integer> pre = new ArrayList<>();//лист предшественников
+
+        for (int i = 0; i < listSize; i++) { // напомняем массивы
+            len.add(1);
+            pre.add(-1);
+        }
+
+        for (int i = 0; i < listSize; i++) {
+            for (int j = 0; j < i; j++) {
+                if (list.get(i) > list.get(j) && len.get(i) < len.get(j) + 1) {
+                    pre.set(i, j);
+                    len.set(i, len.get(j) + 1);
+                }
+            }
+        }
+        int dl = len.get(0);
+        for (int i = 0; i < listSize; i++) {
+            if (dl < len.get(i)) {
+                dl = len.get(i);
+                k = i;
+            }
+        }
+        while (k != -1) {
+            res.add(list.get(k));
+            k = pre.get(k);
+        }
+        ArrayList<Integer> result;
+        result = res;
+        Collections.reverse(result);
+        return result;
+     }
 
     /**
      * Самый короткий маршрут на прямоугольном поле.
@@ -60,7 +127,51 @@ public class JavaDynamicTasks {
      * Здесь ответ 2 + 3 + 4 + 1 + 2 = 12
      */
     public static int shortestPathOnField(String inputName) {
-        throw new NotImplementedError();
+        ArrayList<Integer> list = new ArrayList<Integer>();
+        int res = 0;
+        try {
+            FileReader fr = new FileReader(inputName);
+            BufferedReader reader = new BufferedReader(fr);
+            String line = reader.readLine();
+            int str = 0;
+            int stl = line.split("\\s").length;
+            while (line != null) {
+                str ++;
+                for (String st : line.split("\\s")) {
+                    list.add(Integer.valueOf(st));
+                }
+                line = reader.readLine();
+            }
+            int[][] arr = new int[str][stl];
+            int l = 0;
+            for (int i = 0; i < str; i++) {
+                for (int j = 0; j < stl; j++) {
+                    arr[i][j] = list.get(l);
+                    l++;
+                }
+            }
+            ArrayList<Integer> finish = new ArrayList<>();
+            res = Collections.min(allM(arr, finish, 0, 0, str, stl, 0));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println(res);
+        return res;
+    }
+
+    private static ArrayList<Integer> allM(int[][] arr,ArrayList<Integer> finish, int startA, int startB, int str, int stl, int res){
+        int x = arr[startA][startB];
+        if (startA + 1 < str) {
+            allM(arr, finish, startA + 1, startB, str, stl, res + x);
+        }
+        if (startB + 1 < stl) {
+            allM(arr, finish, startA, startB + 1, str, stl, res + x);
+        }
+        if (startA + 1 < str && startB + 1 < stl){
+            allM(arr, finish, startA + 1, startB + 1, str, stl, res + x);
+        }
+        if (startA == str - 1 && startB == stl - 1) finish.add(res);
+        return finish;
     }
 
     // Задачу "Максимальное независимое множество вершин в графе без циклов"
