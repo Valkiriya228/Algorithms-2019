@@ -133,54 +133,9 @@ public class JavaDynamicTasks {
 
 
     public static int shortestPathOnField(String inputName) {
-        ArrayList<Integer> listOfDigits = new ArrayList<>();
-        ArrayList<Integer> finish = new ArrayList<>();
-
-        int result = 0;
-        try {
-            FileReader fr;
-            fr = new FileReader(inputName);
-            BufferedReader reader = new BufferedReader(fr);
-            String line = reader.readLine();
-            int stroka = 0;
-            int stolbets = line.split(" ").length;
-            while (line != null) {
-                stroka ++;
-                for (String str: line.split(" ")) {
-                    listOfDigits.add(Integer.valueOf(str));
-                }
-                line = reader.readLine();
-            }
-            int[][] matrix = new int[stroka][stolbets];
-            int k = 0;
-            for (int i = 0; i < stroka; i++) {
-                for (int j = 0; j < stolbets; j++) {
-                    matrix[i][j] = listOfDigits.get(k);
-                    k++;
-                }
-            }
-            result = min(ways(0, 0, stroka, stolbets, 0, finish, matrix));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return result;
+        throw new NotImplementedError();
     }
-    private static ArrayList<Integer> ways(int startx, int starty, int stroka, int stolbets, int result, ArrayList<Integer> finWays, int[][] arr){
-        int matrix = arr[startx][starty];
-        if (startx + 1 <= stroka - 1 && starty + 1 <= stolbets - 1){
-            ways(startx + 1, starty + 1, stroka, stolbets, result + matrix, finWays, arr);
-        }
-        if (startx + 1 <= stroka - 1) {
-            ways(startx + 1, starty, stroka, stolbets, result + matrix, finWays, arr);
-        }
-        if (starty + 1 <= stolbets - 1) {
-            ways(startx, starty + 1, stroka, stolbets, result + matrix, finWays, arr);
-        }
-        if (startx == stroka - 1 && starty == stolbets - 1) finWays.add(result);
-        return finWays;
-    }
-
+    
 
     // Задачу "Максимальное независимое множество вершин в графе без циклов"
     // смотрите в уроке 5
