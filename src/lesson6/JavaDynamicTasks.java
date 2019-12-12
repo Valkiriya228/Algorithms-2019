@@ -1,7 +1,6 @@
 package lesson6;
 
 import kotlin.NotImplementedError;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -127,10 +126,7 @@ public class JavaDynamicTasks {
      *
      * Здесь ответ 2 + 3 + 4 + 1 + 2 = 12
      */
-    public static int shortestPathOnField(String inputName) {
-    throw new NotImplementedException();
-    }
-
+    public static int shortestPathOnField(String inputName) {throw new NotImplementedError();}
 
     // Задачу "Максимальное независимое множество вершин в графе без циклов"
     // смотрите в уроке 5
