@@ -1,11 +1,15 @@
 package lesson6;
 
+
+
 import kotlin.NotImplementedError;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import static java.util.Collections.*;
 
 @SuppressWarnings("unused")
 public class JavaDynamicTasks {
@@ -102,7 +106,7 @@ public class JavaDynamicTasks {
         }
         ArrayList<Integer> result;
         result = res;
-        Collections.reverse(result);
+        reverse(result);
         return result;
      }
 
@@ -126,7 +130,57 @@ public class JavaDynamicTasks {
      *
      * Здесь ответ 2 + 3 + 4 + 1 + 2 = 12
      */
-    public static int shortestPathOnField(String inputName) {throw new NotImplementedError();}
+
+
+    public static int shortestPathOnField(String inputName) {
+        ArrayList<Integer> listOfDigits = new ArrayList<>();
+        ArrayList<Integer> finish = new ArrayList<>();
+
+        int result = 0;
+        try {
+            FileReader fr;
+            fr = new FileReader(inputName);
+            BufferedReader reader = new BufferedReader(fr);
+            String line = reader.readLine();
+            int stroka = 0;
+            int stolbets = line.split(" ").length;
+            while (line != null) {
+                stroka ++;
+                for (String str: line.split(" ")) {
+                    listOfDigits.add(Integer.valueOf(str));
+                }
+                line = reader.readLine();
+            }
+            int[][] matrix = new int[stroka][stolbets];
+            int k = 0;
+            for (int i = 0; i < stroka; i++) {
+                for (int j = 0; j < stolbets; j++) {
+                    matrix[i][j] = listOfDigits.get(k);
+                    k++;
+                }
+            }
+            result = min(ways(0, 0, stroka, stolbets, 0, finish, matrix));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+    private static ArrayList<Integer> ways(int startx, int starty, int stroka, int stolbets, int result, ArrayList<Integer> finWays, int[][] arr){
+        int matrix = arr[startx][starty];
+        if (startx + 1 <= stroka - 1 && starty + 1 <= stolbets - 1){
+            ways(startx + 1, starty + 1, stroka, stolbets, result + matrix, finWays, arr);
+        }
+        if (startx + 1 <= stroka - 1) {
+            ways(startx + 1, starty, stroka, stolbets, result + matrix, finWays, arr);
+        }
+        if (starty + 1 <= stolbets - 1) {
+            ways(startx, starty + 1, stroka, stolbets, result + matrix, finWays, arr);
+        }
+        if (startx == stroka - 1 && starty == stolbets - 1) finWays.add(result);
+        return finWays;
+    }
+
 
     // Задачу "Максимальное независимое множество вершин в графе без циклов"
     // смотрите в уроке 5
